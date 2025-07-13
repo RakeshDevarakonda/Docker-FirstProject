@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Sign Up Form</h1>
+  <form id="signupForm">
+    <input type="text" id="name" placeholder="Enter your name" required /><br />
+    <input type="email" id="email" placeholder="Enter your email" required /><br />
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <h2>All Users</h2>
+  <ul id="userList"></ul>
+
+  <script>
+    // Handle sign up
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      await fetch("/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+
+      loadUsers(); // Reload user list
+    });
+
+    // Load all users
+    async function loadUsers() {
+      const res = await fetch("/users");
+      const users = await res.json();
+
+      const list = document.getElementById("userList");
+      list.innerHTML = "";
+      users.forEach((u) => {
+        const li = document.createElement("li");
+        li.textContent = `${u.name} - ${u.email}`;
+        list.appendChild(li);
+      });
+    }
+
+    loadUsers(); // Initial load
+  </script>
+</body>
+</html>
