@@ -1,0 +1,21 @@
+this file for to set how to run based on cmd
+
+1. docker compose -f mongosetup.yaml up -d  ...if we run by file 
+
+
+if try to run on cmd line then
+
+1. first create network 
+
+(try volumes also )
+
+2. run mongo first
+
+docker run -d --name mongodbsetup  --network mongonetwork  -p 27017:27017  -e MONGO_INITDB_ROOT_USERNAME=admin  -e MONGO_INITDB_ROOT_PASSWORD=qwerty mongo
+
+2.
+
+docker run -d --name myapp -p 3000:3000 -e MONGO_URL=mongodb://admin:qwerty@mongodbsetup:27017/dockertest?authSource=admin --network mongonetwork rakeshdevarakonda/test1
+
+
+note :- first container name is mongosetup and url is mongosetup= MONGO_URL=mongodb://admin:qwerty@mongodbsetup:27017/dockertest?authSource=admin
